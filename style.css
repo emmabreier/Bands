@@ -1,7 +1,27 @@
 body {
+    background-color: rgb(184, 245, 172); 
+}
+body {
 	font-family: "Trebuchet MS", cursive, sans-serif;
 	text-align: left;
 	letter-spacing: 0.02em;
+	position: relative;
+}
+.background-star {
+	position: absolute;
+	top: 12%;
+	left: 8%;
+	color: rgba(251, 208, 55, 0.45);
+	font-size: 14rem;
+	line-height: 1;
+	transform: rotate(-12deg);
+	z-index: 0;
+	pointer-events: none;
+}
+
+body > *:not(.background-star) {
+	position: relative;
+	z-index: 1;
 }
 
 h1, h2, h3, h4, p, li, button, a, label {
@@ -26,7 +46,7 @@ h2 {
 
 }
 .corner-photo {
-    position: fixed;
+    position: absolute;
     right: 10px;
     bottom: 15px;
     width: 550px;
