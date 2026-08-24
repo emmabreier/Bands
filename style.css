@@ -25,4 +25,13 @@ h2 {
 	transform: rotate(1.5deg);
 
 }
-
+.corner-photo {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid white;
+    z-index: 10;
+}
