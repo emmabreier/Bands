@@ -1,52 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-   <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Athens Bands Weekly</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CMYK Composition</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
-    <main class="welcome-page">
 
-        <h1>
-            ATHENS<br>
-            BANDS<br>
-            WEEKLY
-        </h1>
+    <header>
 
-        <section class="welcome-content">
+        <h1>CMYK</h1>
 
-            <div class="welcome-image">
-                <img src="../Bands/images/athens-music.jpg" alt="Athens music">
+        <p>
+            Move and recolor the circles!
+        </p>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- =========================
+             CANVAS
+        ========================== -->
+
+        <section class="composition">
+
+            <div id="canvas">
+
+               
+
+                <div
+                    class="circle cyan"
+                    id="circle1">
+                </div>
+
+
+                <div
+                    class="circle magenta"
+                    id="circle2">
+                </div>
+
+
+                <div
+                    class="circle yellow"
+                    id="circle3">
+                </div>
+
+
+                <div
+                    class="circle black"
+                    id="circle4">
+                </div>
+
             </div>
 
-            <div class="welcome-text">
-                <p>
-                    WELCOME TO ATHENS<br>
-                    BANDS WEEKLY! THIS<br>
-                    WEBSITE FEATURES ALL<br>
-                    THE LIVE MUSIC AND<br>
-                    EVENTS HAPPENING IN<br>
-                    ATHENS, GA THIS WEEK.
-                </p>
+        </section>
+
+
+
+        <section class="control-grid">
+
+
+            <div class="circle-controls">
+                <div class="control">
+                 <label for="circle1-color">HEX Color</label>
+                 <input type="text" id="circle1-color" value="#00AEEF" maxlength="7">
+                </div>
+
+                <h2>
+                    <span class="color-dot cyan-dot"></span>
+                </h2>
+
+
+                <div class="control">
+
+                    <label>X Position</label>
+
+                    <input
+                        type="range"
+                        id="circle1-x"
+                        min="0"
+                        max="700"
+                        value="100">
+
+                </div>
+                <div class="control">
+
+                    <label>Y Position</label>
+
+                    <input
+                        type="range"
+                        id="circle1-y"
+                        min="0"
+                        max="450"
+                        value="100">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Size</label>
+
+                    <input
+                        type="range"
+                        id="circle1-size"
+                        min="50"
+                        max="400"
+                        value="220">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Skew X</label>
+
+                    <input
+                        type="range"
+                        id="circle1-skewX"
+                        min="-45"
+                        max="45"
+                        value="0">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Skew Y</label>
+
+                    <input
+                        type="range"
+                        id="circle1-skewY"
+                        min="-45"
+                        max="45"
+                        value="0">
+
+                </div>
+
             </div>
+
+            <div class="circle-controls">
+                <div class="control">
+                    <label for="circle2-color">HEX Color</label>
+                    <input type="text" id="circle2-color" value="#EC008C" maxlength="7">
+                </div>
+                <h2>
+                    <span class="color-dot magenta-dot"></span>
+                </h2>
+
+
+                <div class="control">
+
+                    <label>X Position</label>
+
+                    <input
+                        type="range"
+                        id="circle2-x"
+                        min="0"
+                        max="700"
+                        value="350">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Y Position</label>
+
+                    <input
+                        type="range"
+                        id="circle2-y"
+                        min="0"
+                        max="450"
+                        value="100">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Size</label>
+
+                    <input
+                        type="range"
+                        id="circle2-size"
+                        min="50"
+                        max="400"
+                        value="220">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Skew X</label>
+
+                    <input
+                        type="range"
+                        id="circle2-skewX"
+                        min="-45"
+                        max="45"
+                        value="0">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Skew Y</label>
+
+                    <input
+                        type="range"
+                        id="circle2-skewY"
+                        min="-45"
+                        max="45"
+                        value="0">
+
+                </div>
+
+            </div>
+
+
+
+            <div class="circle-controls">
+                <div class="control">
+                <label for="circle3-color">HEX Color</label>
+                 <input type="text" id="circle3-color" value="#FFF200" maxlength="7">
+                </div>
+                <h2>
+                    <span class="color-dot yellow-dot"></span>
+                </h2>
+
+
+                <div class="control">
+
+                    <label>X Position</label>
+
+                    <input
+                        type="range"
+                        id="circle3-x"
+                        min="0"
+                        max="700"
+                        value="220">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Y Position</label>
+
+                    <input
+                        type="range"
+                        id="circle3-y"
+                        min="0"
+                        max="450"
+                        value="280">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Size</label>
+
+                    <input
+                        type="range"
+                        id="circle3-size"
+                        min="50"
+                        max="400"
+                        value="220">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Skew X</label>
+
+                    <input
+                        type="range"
+                        id="circle3-skewX"
+                        min="-45"
+                        max="45"
+                        value="0">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Skew Y</label>
+
+                    <input
+                        type="range"
+                        id="circle3-skewY"
+                        min="-45"
+                        max="45"
+                        value="0">
+
+                </div>
+
+            </div>
+
+
+
+            <div class="circle-controls">
+                    <div class="control">
+    <label for="circle4-color">HEX Color</label>
+    <input type="text" id="circle4-color" value="#808080" maxlength="7">
+</div>
+                <h2>
+                    <span class="color-dot black-dot"></span>
+                </h2>
+
+
+                <div class="control">
+
+                    <label>X Position</label>
+
+                    <input
+                        type="range"
+                        id="circle4-x"
+                        min="0"
+                        max="700"
+                        value="420">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Y Position</label>
+
+                    <input
+                        type="range"
+                        id="circle4-y"
+                        min="0"
+                        max="450"
+                        value="280">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Size</label>
+
+                    <input
+                        type="range"
+                        id="circle4-size"
+                        min="50"
+                        max="400"
+                        value="220">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Skew X</label>
+
+                    <input
+                        type="range"
+                        id="circle4-skewX"
+                        min="-45"
+                        max="45"
+                        value="0">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Skew Y</label>
+
+                    <input
+                        type="range"
+                        id="circle4-skewY"
+                        min="-45"
+                        max="45"
+                        value="0">
+
+                </div>
+
+            </div>
+
 
         </section>
 
     </main>
 
+
+    <script src="script.js"></script>
+
 </body>
-</html>
-</body>
+
 </html>

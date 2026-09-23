@@ -1,50 +1,290 @@
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
+
+
 body {
-    background: white;
-    color: black;
+
+    margin: 0;
+
+    background: #eeeeee;
+
+    color: #111111;
+
     font-family: Arial, Helvetica, sans-serif;
+
 }
-.welcome-page {
-    min-height: 100vh;
-    padding: 80px 6vw;
-    border: 1px solid #777;
+
+
+
+header {
+
+    padding: 30px 40px;
+
 }
-h1 {
-    font-size: clamp(80px, 13vw, 150px);
-    font-weight: 900;
-    line-height: 0.70;
-    letter-spacing: -0.08em;
-    margin-left: 2vw;
+
+
+header h1 {
+
+    margin: 0 0 8px;
+
+    font-size: 32px;
+
 }
-.welcome-content {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 7vw;
-    align-items: center;
-    margin-top: 70px;
-    max-width: 1200px;
-	padding: 00 left
+
+
+header p {
+
+    margin: 0;
+
+    font-size: 14px;
+
 }
-.welcome-image {
-    width: 486px;
-    height: 324px;
+
+
+main {
+
+    padding: 0 40px 40px;
+
+}
+
+.composition {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin-bottom: 30px;
+
+}
+
+
+#canvas {
+
+    position: relative;
+
+    width: 900px;
+
+    height: 550px;
+
     overflow: hidden;
+
+    background: white;
+
+    border: 1px solid #cccccc;
+
 }
-.welcome-image img {
+
+
+
+.circle {
+
+    position: absolute;
+
+    width: 220px;
+
+    height: 220px;
+
+    border-radius: 50%;
+
+
+    mix-blend-mode: multiply;
+
+    pointer-events: none;
+
+}
+
+
+
+
+.cyan {
+
+    background: rgb(0, 174, 239);
+
+}
+
+
+.magenta {
+
+    background: rgb(236, 0, 140);
+
+}
+
+
+.yellow {
+
+    background: rgb(255, 242, 0);
+
+}
+
+
+.black-dot {
+    background: rgb(128, 128, 128);
+}
+
+
+
+.control-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+}
+
+
+
+.circle-controls {
+
+    background: white;
+
+    border: 1px solid #cccccc;
+
+    padding: 20px;
+
+}
+
+
+.circle-controls h2 {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 0 0 25px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #111111;
+
+    font-size: 18px;
+
+    font-weight: 400;
+
+}
+
+
+
+
+.color-dot {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #cccccc;
+}
+
+
+.cyan-dot {
+
+    background: rgb(0, 174, 239);
+
+}
+
+
+.magenta-dot {
+
+    background: rgb(236, 0, 140);
+
+}
+
+
+.yellow-dot {
+
+    background: rgb(255, 242, 0);
+
+}
+
+
+.black {
+    background: rgb(128, 128, 128);
+}
+
+
+.control {
+
+    margin-bottom: 20px;
+
+}
+
+
+.control label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+}
+
+
+input[type="range"] {
+
+    display: block;
+
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+
+    cursor: pointer;
+
 }
-.welcome-text {
-    text-align: right;
+
+
+@media (max-width: 1000px) {
+
+    .control-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
 }
-.welcome-text p {
-    font-size: clamp(20px, 2.5vw, 32px);
-    font-weight: 200;
-    line-height: 1.3;
-    letter-spacing: -0.04em;
+
+
+@media (max-width: 650px) {
+
+    .control-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    #canvas {
+
+        width: 100%;
+
+        height: 500px;
+
+    }
+
+
+    main {
+
+        padding: 20px;
+
+    }
+
+}
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    font-family: monospace;
+    font-size: 13px;
+    background: white;
 }
