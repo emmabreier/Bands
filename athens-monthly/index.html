@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athens Monthly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="masthead">
+            <h1>Athens Monthly</h1>
+            <p>Events Happening<br>In Athens, GA</p>
+            <div class="month">OCTO<br>BER</div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside id="filters">
+            <div class="filter-top">
+                <h2>Filters</h2>
+                <button id="clear" type="button">Clear all</button>
+            </div>
+
+            <input type="search" id="search" placeholder="Search events, venues, or dates..." aria-label="Search events">
+
+            <fieldset class="locals">
+                <legend>Athens Locals</legend>
+                <label><input type="checkbox" name="local" value="local"> Local performers / hosts</label>
+                <label><input type="checkbox" name="local" value="visiting"> Visiting / non-local</label>
+            </fieldset>
+
+            <fieldset class="type">
+                <legend>Type of Event</legend>
+                <label><input type="checkbox" name="audience" value="solo"> Solo / Friends</label>
+                <label><input type="checkbox" name="audience" value="date"> Date Night</label>
+                <label><input type="checkbox" name="audience" value="family"> Family Event</label>
+            </fieldset>
+
+            <fieldset class="event">
+                <legend>Event</legend>
+                <label><input type="checkbox" name="category" value="music" id="music-parent"> Music / Concerts</label>
+                <div class="sub" id="genres">
+                    <label><input type="checkbox" name="genre" value="country"> Country</label>
+                    <label><input type="checkbox" name="genre" value="rap"> Rap</label>
+                    <label><input type="checkbox" name="genre" value="indie"> Indie</label>
+                    <label><input type="checkbox" name="genre" value="rock"> Rock</label>
+                </div>
+                <label><input type="checkbox" name="category" value="comedy"> Comedy</label>
+                <label><input type="checkbox" name="category" value="seminar"> Seminar</label>
+                <label><input type="checkbox" name="category" value="restaurant"> Restaurant Event</label>
+            </fieldset>
+
+            <label class="sort">Sort by
+                <select id="sort">
+                    <option value="date">Date</option>
+                    <option value="title">Name (A-Z)</option>
+                    <option value="venue">Venue</option>
+                </select>
+            </label>
+        </aside>
+
+        <main>
+            <p id="count"></p>
+            <div id="events"></div>
+        </main>
+    </div>
+
+    <dialog id="modal">
+        <button type="button" id="modal-close" aria-label="Close">&times;</button>
+        <div id="modal-photo"></div>
+        <div id="modal-body"></div>
+    </dialog>
+
+    <script src="events.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
