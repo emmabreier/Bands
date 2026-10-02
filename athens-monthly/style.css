@@ -73,13 +73,13 @@ header p { margin: 0; font-size: 20px; line-height: 1.3; }
     transform: rotate(var(--r, 0deg));
 }
 
-/* Absolutely positioned so the ghosts never change the bar's layout. */
+
 .card h3, .card .where { position: relative; }
 .date-ghost { position: absolute; top: calc(100% + 12px); width: 56px; height: auto; opacity: 0.9; pointer-events: none; }
 .card h3 .date-ghost { left: 190px; }
 .card .where .date-ghost { left: 170px; }
 
-/* Same black-outline bevel as .card. */
+
 .intro {
     --bevel: 16px;
     background: #000;
@@ -214,7 +214,7 @@ main { flex: 1; }
     gap: 16px;
 }
 
-/* Black outer shell + white inner, both clipped, gives a beveled outline. */
+
 .card {
     --bevel: 16px;
     background: #000;

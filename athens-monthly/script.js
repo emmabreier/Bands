@@ -6,10 +6,9 @@ const genreBoxes = document.querySelectorAll('input[name="genre"]');
 
 const labels = { solo: "Solo / Friends", friends: "Solo / Friends", date: "Date Night", family: "Family", all: "All Audiences" };
 
-// Solo and friends events share one filter box.
+
 const audienceKey = a => (a === "friends" ? "solo" : a);
 
-// Fields may be one value or an array; "all" matches every filter option in that group.
 const toList = v => (Array.isArray(v) ? v : v ? [v] : []);
 const hits = (value, picks) => {
     const l = toList(value);
@@ -20,14 +19,47 @@ const modal = document.getElementById("modal");
 const photoEl = document.getElementById("modal-photo");
 const bodyEl = document.getElementById("modal-body");
 
+// Venue photos shown in the pop-up; an event's own image field overrides these.
+const venueImages = {
+    "40 Watt Club": "images/40watt.jpg",
+    "Allgood Lounge": "images/allgoodlounge.jpeg",
+    "Athens Community Theatre": "images/athenscommunitytheatre.jpeg",
+    "Athens Creative Hub": "images/creativehub.jpeg",
+    "Athens Downtown Library": "images/downtownlibrary.jpeg",
+    "Athens-Clarke County Library": "images/clarkecountylibrary.jpeg",
+    "Bishop Park": "images/bishoppark.png",
+    "Buvez": "images/buvez.jpeg",
+    "Ciné Barcafé": "images/cine.jpeg",
+    "Classic Center": "images/classiccenter.jpeg",
+    "Farm 255": "images/farm255.jpeg",
+    "Five & Ten": "images/five%20and%20ten.jpeg",
+    "Flicker Theatre & Bar": "images/flicker.jpg",
+    "Georgia Theatre": "images/georgiatheattre.jpg",
+    "Georgia Theatre Rooftop": "images/georgiatheatrerooftop.jpeg",
+    "Hendershot's": "images/hendershots.jpeg",
+    "Hot Corner": "images/hotcorner.jpeg",
+    "Little Italy": "images/littleitaly.jpg",
+    "Mama's Boy": "images/mamasboy.jpg",
+    "Neighborhood porches": "images/porchfestneighborhood.jpeg",
+    "Normaltown Comedy Room": "images/normaltowncomedyroom.jpg",
+    "State Botanical Garden": "images/statebotanicalgarden.jpeg",
+    "Taqueria del Sol": "images/taqueriadelsol.jpeg",
+    "The National": "images/thenational.jpeg",
+    "The Place": "images/theplace.jpeg",
+    "Trappeze Pub": "images/trappezepub.jpeg",
+    "UGA Career Center": "images/uga%20career%20center.jpeg",
+    "UGA Georgia Center": "images/ugageorgiacenter.jpeg"
+};
+
 // Optional per-event fields: image (path/URL), description, price.
 function openModal(e, tags) {
     photoEl.replaceChildren();
     photoEl.className = "";
-    if (e.image) {
+    const photo = e.image || venueImages[e.venue];
+    if (photo) {
         const img = document.createElement("img");
-        img.src = e.image;
-        img.alt = e.title;
+        img.src = photo;
+        img.alt = e.venue;
         photoEl.appendChild(img);
     } else {
         photoEl.className = `placeholder ${toList(e.category)[0]}`;
@@ -50,8 +82,7 @@ function openModal(e, tags) {
         dl.append(dt, dd);
     }
     const desc = document.createElement("p");
-    desc.textContent = e.description ||
-        `${e.local ? "A local Athens event" : "A visiting event"} at ${e.venue}. Details coming soon.`;
+    desc.textContent = e.description || "";
     const tagBox = document.createElement("div");
     for (const [text, group] of tags) {
         const s = document.createElement("span");
@@ -59,7 +90,7 @@ function openModal(e, tags) {
         s.textContent = text;
         tagBox.appendChild(s);
     }
-    bodyEl.replaceChildren(h2, dl, desc, tagBox);
+    bodyEl.replaceChildren(h2, dl, ...(e.description ? [desc] : []), tagBox);
     modal.showModal();
 }
 
@@ -145,7 +176,6 @@ function render() {
         where.className = "where";
         where.textContent = e.venue;
 
-        // Halloween events get a ghost under the title and under the location.
         if (e.date === "2026-10-31") {
             for (const el of [h3, where]) {
                 const g = document.createElement("img");
@@ -155,8 +185,6 @@ function render() {
                 el.append(g);
             }
         }
-
-        // Three boxes: locals, event audience, type of event (with genre).
         const chips = [
             tags[0],
             [audiences.join(", "), "type"],
@@ -183,7 +211,7 @@ function render() {
     }
 }
 
-// Genres are only shown while Music is checked; hiding them also clears them.
+
 function syncGenres() {
     document.getElementById("genres").classList.toggle("open", musicParent.checked);
     if (!musicParent.checked) genreBoxes.forEach(g => (g.checked = false));
@@ -200,7 +228,7 @@ document.getElementById("clear").addEventListener("click", () => {
     render();
 });
 
-// Filters stick just below the pinned header, whatever its height.
+
 const headerEl = document.querySelector("header");
 new ResizeObserver(() => {
     document.documentElement.style.setProperty("--header-h", `${headerEl.offsetHeight}px`);
