@@ -2,17 +2,29 @@
 
 body {
     margin: 0;
+    position: relative;
     font-family: "Jost", "Futura", "Century Gothic", Arial, sans-serif;
-    background: #e2e2db;
+    background: #f7eaf1;
     color: #1d1d1d;
 }
 
 input, select, button { font-family: inherit; }
 
+input[type="checkbox"] { accent-color: var(--uga-red); }
+
+:focus-visible { outline: 3px solid var(--date); outline-offset: 2px; }
+
+#search:focus, #sort:focus { outline: 3px solid var(--date); border-color: var(--uga-red); }
+
+::selection { background: var(--type); color: #1d1d1d; }
+
 header {
     background: var(--uga-red);
     color: #fff;
     padding: 24px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .masthead {
@@ -37,21 +49,80 @@ header p { margin: 0; font-size: 20px; line-height: 1.3; }
 
 .month {
     margin-left: auto;
+    margin-right: -14px;
     font-family: "Dela Gothic One", "Arial Black", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.2;
     letter-spacing: 0.25em;
 }
 
-@media (max-width: 760px) {
-    .masthead { flex-wrap: wrap; padding: 14px 18px; }
-    header { padding: 16px; }
+.ghost { width: 75px; height: 83px; margin: -15px 0; flex-shrink: 0; object-fit: contain; }
+
+.ghost-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
 }
+
+.ghost-bg img {
+    position: absolute;
+    height: auto;
+    opacity: 0.35;
+    transform: rotate(var(--r, 0deg));
+}
+
+/* Absolutely positioned so the ghosts never change the bar's layout. */
+.card h3, .card .where { position: relative; }
+.date-ghost { position: absolute; top: calc(100% + 12px); width: 56px; height: auto; opacity: 0.9; pointer-events: none; }
+.card h3 .date-ghost { left: 190px; }
+.card .where .date-ghost { left: 170px; }
+
+/* Same black-outline bevel as .card. */
+.intro {
+    --bevel: 16px;
+    background: #000;
+    padding: 3px;
+    margin: 24px 130px 0;
+    clip-path: polygon(var(--bevel) 0, calc(100% - var(--bevel)) 0, 100% var(--bevel),
+        100% calc(100% - var(--bevel)), calc(100% - var(--bevel)) 100%, var(--bevel) 100%,
+        0 calc(100% - var(--bevel)), 0 var(--bevel));
+}
+
+.intro-inner {
+    --bevel: 14px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    background: var(--type);
+    padding: 32px 28px;
+    overflow: hidden;
+    clip-path: polygon(var(--bevel) 0, calc(100% - var(--bevel)) 0, 100% var(--bevel),
+        100% calc(100% - var(--bevel)), calc(100% - var(--bevel)) 100%, var(--bevel) 100%,
+        0 calc(100% - var(--bevel)), 0 var(--bevel));
+}
+
+/* Negative margins let the art grow without making the panel taller. */
+.intro img { width: 380px; height: 380px; margin: -60px 0; flex-shrink: 0; object-fit: contain; order: 2; }
+
+.intro h2 {
+    margin: 0 0 10px;
+    font-family: "Dela Gothic One", "Arial Black", Arial, sans-serif;
+    font-weight: normal;
+    font-size: 22px;
+    text-transform: uppercase;
+    color: #55130b;
+}
+
+.intro-text { padding: 0 80px 0 48px; }
+
+.intro p { margin: 0 0 8px; font-size: 17px; line-height: 1.45; }
 
 .layout {
     display: flex;
     gap: 24px;
-    padding: 24px 40px;
+    padding: 40px 40px 24px;
     align-items: flex-start;
 }
 
@@ -62,16 +133,21 @@ header p { margin: 0; font-size: 20px; line-height: 1.3; }
     padding: 16px;
     border-radius: 8px;
     position: sticky;
-    top: 16px;
+    top: calc(var(--header-h, 0px) + 24px);
+    max-height: calc(100vh - var(--header-h, 0px) - 48px);
+    overflow-y: auto;
 }
 
 .filter-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
 .filter-top h2 { margin: 0; font-size: 18px; }
+
+#sort { width: 100%; padding: 6px; }
 
 #search {
     width: 100%;
@@ -82,10 +158,12 @@ header p { margin: 0; font-size: 20px; line-height: 1.3; }
 }
 
 :root {
-    --uga-red: #e6552f;
-    --locals: #559152;
-    --type: #f2b640;
-    --event: #e688a5;
+    --uga-red: #a62f1c;
+    --locals: #c67a72;
+    --type: #e69948;
+    --event: #eab0d8;
+    --date: #aa5f28;
+    --ink: #1d1d1d;
 }
 
 fieldset {
@@ -107,7 +185,7 @@ legend { font-weight: bold; padding: 0 6px; }
     text-transform: uppercase;
 }
 
-.card span.locals { background: var(--locals); color: #fff; }
+.card span.locals { background: var(--locals); color: var(--ink); }
 .card span.type { background: var(--type); color: #1d1d1d; }
 .card span.event { background: var(--event); color: #1d1d1d; }
 
@@ -115,9 +193,6 @@ fieldset label { display: block; padding: 4px 0; }
 
 .sub { margin-left: 22px; display: none; }
 .sub.open { display: block; }
-
-.sort { display: block; margin-top: 8px; }
-.sort select { width: 100%; margin-top: 4px; padding: 4px; }
 
 button {
     cursor: pointer;
@@ -129,6 +204,9 @@ button {
 }
 
 main { flex: 1; }
+
+.count-row { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+#count { margin: 0; font-size: 13px; }
 
 #events {
     display: flex;
@@ -164,7 +242,7 @@ main { flex: 1; }
 .card h3, .card p { margin: 0; font-weight: normal; }
 .card h3 { font-size: 22px; padding: 0 24px 0 16px; }
 .when, .where { font-size: 20px; line-height: 1.2; }
-.when span { display: block; }
+.when span { display: block; color: var(--date); }
 .when span + span { margin-top: 24px; }
 
 .chips { display: flex; flex-direction: column; gap: 12px; }
@@ -176,13 +254,10 @@ main { flex: 1; }
     text-align: center;
 }
 
-.chip.locals { border-color: #000; color: #fff; background: var(--locals); }
+.chip.locals { border-color: #000; color: var(--ink); background: var(--locals); }
 .chip.type { border-color: #000; color: #1d1d1d; background: var(--type); }
 .chip.event { border-color: #000; color: #1d1d1d; background: var(--event); }
 
-@media (max-width: 900px) {
-    .card-inner { grid-template-columns: 1fr 1fr; }
-}
 .card { cursor: pointer; }
 .card:hover { background: var(--uga-red); }
 
@@ -224,10 +299,10 @@ main { flex: 1; }
     background: var(--uga-red);
 }
 
-#modal-photo.music { background: linear-gradient(135deg, #e688a5, #e6552f); }
-#modal-photo.comedy { background: linear-gradient(135deg, #f2b640, #e6552f); }
-#modal-photo.seminar { background: linear-gradient(135deg, #559152, #f2b640); }
-#modal-photo.restaurant { background: linear-gradient(135deg, #e6552f, #e688a5); }
+#modal-photo.music { background: linear-gradient(135deg, #a62f1c, #55130b); }
+#modal-photo.comedy { background: linear-gradient(135deg, #aa5f28, #a62f1c); }
+#modal-photo.seminar { background: linear-gradient(135deg, #55130b, #aa5f28); }
+#modal-photo.restaurant { background: linear-gradient(135deg, #aa5f28, #55130b); }
 
 #modal-body { padding: 20px; }
 #modal-body h2 { margin-top: 0; }
@@ -243,11 +318,41 @@ main { flex: 1; }
     color: #fff;
     text-transform: capitalize;
 }
-#modal-body span.locals { background: var(--locals); color: #fff; }
+#modal-body span.locals { background: var(--locals); color: var(--ink); }
 #modal-body span.type { background: var(--type); color: #1d1d1d; }
 #modal-body span.event { background: var(--event); color: #1d1d1d; }
 
-@media (max-width: 760px) {
-    .layout { flex-direction: column; padding: 16px; }
-    #filters { width: 100%; position: static; }
+/* Compact layout for narrow windows; the filters stay on the left. */
+@media (max-width: 900px) {
+    header { padding: 12px 16px; }
+    .masthead { flex-wrap: wrap; gap: 8px 16px; padding: 12px 16px; }
+    header h1 { font-size: 28px; }
+    header p { font-size: 14px; }
+    .month { font-size: 16px; }
+    .ghost { width: 48px; height: 53px; margin: -9px 0; }
+
+    .intro { margin: 12px 16px 0; }
+    .intro-inner { flex-direction: column; text-align: center; padding: 14px 16px; gap: 12px; }
+    .intro img { width: 200px; height: 200px; margin: -30px 0; order: 0; }
+    .intro-text { padding: 0; }
+    .intro h2 { font-size: 16px; }
+    .intro p { font-size: 14px; }
+
+    .layout { gap: 12px; padding: 16px; }
+    #filters { width: 190px; padding: 10px; font-size: 13px; }
+    .filter-top h2 { font-size: 14px; }
+    #filters button { padding: 2px 6px; font-size: 12px; }
+    #filters legend { font-size: 11px; }
+    #filters fieldset { margin: 10px 0; padding: 4px 8px; }
+    #filters fieldset label { padding: 2px 0; }
+
+    .card-inner { grid-template-columns: 1fr 1fr; gap: 10px 14px; padding: 16px 18px; }
+    .card h3 { grid-column: 1 / -1; font-size: 16px; padding: 0; }
+    .when, .where { font-size: 13px; }
+    .when span + span { margin-top: 8px; }
+    .chips { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .chip { font-size: 9px; padding: 4px 6px; }
+
+    /* Narrow bars have no spare room under the text, so the ghosts tuck in at the right edge of their cells. */
+    .card h3 .date-ghost, .card .where .date-ghost { top: 0; left: auto; right: 0; width: 34px; }
 }

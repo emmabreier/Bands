@@ -3,19 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Phones get the full desktop layout scaled to fit, so nothing scrolls sideways.
+        if (screen.width < 900) {
+            document.querySelector('meta[name="viewport"]').content = "width=1100";
+        }
+    </script>
     <title>Athens Monthly</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="ghost-bg" aria-hidden="true">
+        <img src="images/ghost.svg" alt="" style="top:230px; left:22px; width:78px; --r:-14deg">
+        <img src="images/ghost.svg" alt="" style="top:400px; right:30px; width:64px; --r:12deg">
+        <img src="images/ghost.svg" alt="" style="top:760px; left:4px; width:34px; --r:10deg">
+        <img src="images/ghost.svg" alt="" style="top:1010px; right:4px; width:36px; --r:-10deg">
+        <img src="images/ghost.svg" alt="" style="top:1380px; left:3px; width:38px; --r:-8deg">
+        <img src="images/ghost.svg" alt="" style="top:1700px; right:3px; width:34px; --r:14deg">
+        <img src="images/ghost.svg" alt="" style="top:2080px; left:4px; width:36px; --r:12deg">
+        <img src="images/ghost.svg" alt="" style="top:2420px; right:4px; width:38px; --r:-12deg">
+        <img src="images/ghost.svg" alt="" style="top:2780px; left:3px; width:34px; --r:-6deg">
+    </div>
+
     <header>
         <div class="masthead">
             <h1>Athens Monthly</h1>
             <p>Events Happening<br>In Athens, GA</p>
             <div class="month">OCTO<br>BER</div>
+            <img class="ghost" src="images/whiteghost.svg" alt="">
         </div>
     </header>
+
+    <section class="intro">
+        <div class="intro-inner">
+            <img src="images/athensbackground.svg" alt="Illustration of Athens, Georgia">
+            <div class="intro-text">
+                <h2>Welcome to the Classic City</h2>
+                <p>Athens is a college town with a music scene far bigger than its size. Every night of the week there is a show, a joke, a talk or a good dinner happening somewhere downtown.</p>
+                <p>Browse October's events below, then use the filters to find what fits your night: local acts, a date, or something for the whole family.</p>
+            </div>
+        </div>
+    </section>
 
     <div class="layout">
         <aside id="filters">
@@ -25,6 +55,14 @@
             </div>
 
             <input type="search" id="search" placeholder="Search events, venues, or dates..." aria-label="Search events">
+            <div class="count-row">
+                <select id="sort" aria-label="Sort by">
+                    <option value="date">Sort: Date</option>
+                    <option value="title">Sort: Name (A-Z)</option>
+                    <option value="venue">Sort: Venue</option>
+                </select>
+                <p id="count"></p>
+            </div>
 
             <fieldset class="locals">
                 <legend>Athens Locals</legend>
@@ -33,14 +71,14 @@
             </fieldset>
 
             <fieldset class="type">
-                <legend>Type of Event</legend>
+                <legend>Event Audience</legend>
                 <label><input type="checkbox" name="audience" value="solo"> Solo / Friends</label>
                 <label><input type="checkbox" name="audience" value="date"> Date Night</label>
                 <label><input type="checkbox" name="audience" value="family"> Family Event</label>
             </fieldset>
 
             <fieldset class="event">
-                <legend>Event</legend>
+                <legend>Type of Event</legend>
                 <label><input type="checkbox" name="category" value="music" id="music-parent"> Music / Concerts</label>
                 <div class="sub" id="genres">
                     <label><input type="checkbox" name="genre" value="country"> Country</label>
@@ -52,18 +90,9 @@
                 <label><input type="checkbox" name="category" value="seminar"> Seminar</label>
                 <label><input type="checkbox" name="category" value="restaurant"> Restaurant Event</label>
             </fieldset>
-
-            <label class="sort">Sort by
-                <select id="sort">
-                    <option value="date">Date</option>
-                    <option value="title">Name (A-Z)</option>
-                    <option value="venue">Venue</option>
-                </select>
-            </label>
         </aside>
 
         <main>
-            <p id="count"></p>
             <div id="events"></div>
         </main>
     </div>

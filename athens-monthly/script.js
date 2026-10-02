@@ -4,10 +4,17 @@ const sortEl = document.getElementById("sort");
 const musicParent = document.getElementById("music-parent");
 const genreBoxes = document.querySelectorAll('input[name="genre"]');
 
-const labels = { solo: "Solo / Friends", friends: "Solo / Friends", date: "Date Night", family: "Family" };
+const labels = { solo: "Solo / Friends", friends: "Solo / Friends", date: "Date Night", family: "Family", all: "All Audiences" };
 
 // Solo and friends events share one filter box.
 const audienceKey = a => (a === "friends" ? "solo" : a);
+
+// Fields may be one value or an array; "all" matches every filter option in that group.
+const toList = v => (Array.isArray(v) ? v : v ? [v] : []);
+const hits = (value, picks) => {
+    const l = toList(value);
+    return l.includes("all") || l.some(x => picks.includes(x));
+};
 
 const modal = document.getElementById("modal");
 const photoEl = document.getElementById("modal-photo");
@@ -23,7 +30,7 @@ function openModal(e, tags) {
         img.alt = e.title;
         photoEl.appendChild(img);
     } else {
-        photoEl.className = `placeholder ${e.category}`;
+        photoEl.className = `placeholder ${toList(e.category)[0]}`;
         photoEl.textContent = e.title;
     }
 
@@ -71,19 +78,20 @@ function searchText(e) {
     const long = d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
     const short = d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
     const numeric = `${d.getMonth() + 1}/${d.getDate()}`;
-    return `${e.title} ${e.venue} ${long} ${short} ${numeric} ${e.date} ${e.time}`.toLowerCase();
+    return `${e.title} ${e.venue} ${long} ${short} ${numeric} ${e.date} ${e.time} ${toList(e.category).join(" ")} ${toList(e.genre).join(" ")}`.toLowerCase();
 }
 
 function matches(e, f) {
     if (f.query && !searchText(e).includes(f.query)) return false;
     if (f.local.length && !f.local.includes(e.local ? "local" : "visiting")) return false;
-    if (f.audience.length && !f.audience.includes(audienceKey(e.audience))) return false;
+    if (f.audience.length && !hits(toList(e.audience).map(audienceKey), f.audience)) return false;
 
     // Category filter: a checked genre narrows music; other categories match directly.
+    const cats = toList(e.category);
     const picked = new Set(f.category);
     if (f.genre.length) picked.add("music");
-    if (picked.size && !picked.has(e.category)) return false;
-    if (e.category === "music" && f.genre.length && !f.genre.includes(e.genre)) return false;
+    if (picked.size && !cats.some(c => picked.has(c))) return false;
+    if (cats.includes("music") && f.genre.length && !hits(e.genre, f.genre)) return false;
     return true;
 }
 
@@ -114,12 +122,14 @@ function render() {
         const card = document.createElement("article");
         card.className = "card";
 
+        const audiences = [...new Set(toList(e.audience).map(a => labels[a]))];
+        const genres = toList(e.genre).filter(g => g !== "all");
         const tags = [
             [e.local ? "Athens Local" : "Visiting", "locals"],
-            [labels[e.audience], "type"],
-            [e.category, "event"]
+            ...audiences.map(a => [a, "type"]),
+            ...toList(e.category).map(c => [c, "event"]),
+            ...genres.map(g => [g, "event"])
         ];
-        if (e.genre) tags.push([e.genre, "event"]);
 
         const h3 = document.createElement("h3");
         h3.textContent = e.title;
@@ -135,8 +145,23 @@ function render() {
         where.className = "where";
         where.textContent = e.venue;
 
-        // Three boxes: locals, type of event, event (with genre).
-        const chips = [tags[0], tags[1], [e.genre ? `${e.category} · ${e.genre}` : e.category, "event"]];
+        // Halloween events get a ghost under the title and under the location.
+        if (e.date === "2026-10-31") {
+            for (const el of [h3, where]) {
+                const g = document.createElement("img");
+                g.className = "date-ghost";
+                g.src = "images/ghost.svg";
+                g.alt = "";
+                el.append(g);
+            }
+        }
+
+        // Three boxes: locals, event audience, type of event (with genre).
+        const chips = [
+            tags[0],
+            [audiences.join(", "), "type"],
+            [[...toList(e.category), ...genres].join(" · "), "event"]
+        ];
         const tagBox = document.createElement("div");
         tagBox.className = "chips";
         for (const [text, group] of chips) {
@@ -174,5 +199,11 @@ document.getElementById("clear").addEventListener("click", () => {
     syncGenres();
     render();
 });
+
+// Filters stick just below the pinned header, whatever its height.
+const headerEl = document.querySelector("header");
+new ResizeObserver(() => {
+    document.documentElement.style.setProperty("--header-h", `${headerEl.offsetHeight}px`);
+}).observe(headerEl);
 
 render();
