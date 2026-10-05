@@ -235,6 +235,15 @@ function render() {
             where.appendChild(thumbnail);
         }
 
+        if (e.date === "2026-10-31") {
+            for (const el of [h3, where]) {
+                const g = document.createElement("img");
+                g.className = "date-ghost";
+                g.src = "images/ghost.svg";
+                g.alt = "";
+                el.append(g);
+            }
+        }
         const chips = [
             tags[0],
             [audiences.join(", "), "type"],
