@@ -286,13 +286,6 @@ document.getElementById("search").addEventListener("input", () => {
     });
 });
 
-document.getElementById("clear").addEventListener("click", () => {
-    document.querySelectorAll('#filters input[type="checkbox"]').forEach(i => (i.checked = false));
-    syncGenres();
-    render();
-});
-
-
 const headerEl = document.querySelector("header");
 new ResizeObserver(() => {
     document.documentElement.style.setProperty("--header-h", `${headerEl.offsetHeight}px`);
