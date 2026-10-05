@@ -51,6 +51,24 @@ const venueImages = {
     "UGA Georgia Center": "images/ugageorgiacenter.jpeg"
 };
 
+const venueWebsites = {
+    "40 Watt Club": "https://www.40watt.com/",
+    "Allgood Lounge": "https://www.allgoodlounge.com/",
+    "Athens-Clarke County Library": "https://www.accgov.com/library",
+    "Bishop Park": "https://www.accgov.com/Facilities/Facility/Details/Bishop-Park-19",
+    "Ciné Barcafé": "https://www.cineathens.com/",
+    "Classic Center": "https://www.classiccenter.com/",
+    "Five & Ten": "https://www.fiveandten.com/",
+    "Georgia Theatre": "https://www.georgiatheatre.com/",
+    "Georgia Theatre Rooftop": "https://www.georgiatheatre.com/",
+    "Mama's Boy": "https://www.mamasboyathens.com/",
+    "State Botanical Garden": "https://botgarden.uga.edu/",
+    "The National": "https://www.thenationalrestaurant.com/",
+    "Trappeze Pub": "https://www.trappezepub.com/",
+    "UGA Career Center": "https://career.uga.edu/",
+    "UGA Georgia Center": "https://www.georgiacenter.uga.edu/"
+};
+
 // Optional per-event fields: image (path/URL), description, price.
 function openModal(e, tags) {
     photoEl.replaceChildren();
@@ -78,7 +96,16 @@ function openModal(e, tags) {
         const dt = document.createElement("dt");
         dt.textContent = k;
         const dd = document.createElement("dd");
-        dd.textContent = v;
+        if (k === "Where" && (e.website || venueWebsites[e.venue])) {
+            const link = document.createElement("a");
+            link.href = e.website || venueWebsites[e.venue];
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Venue website";
+            dd.append(document.createTextNode(`${v} · `), link);
+        } else {
+            dd.textContent = v;
+        }
         dl.append(dt, dd);
     }
     const desc = document.createElement("p");
