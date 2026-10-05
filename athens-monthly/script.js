@@ -210,7 +210,7 @@ function render() {
         h3.textContent = e.title;
         const when = document.createElement("p");
         when.className = "when";
-        const [day, time] = [formatDate(e.date).replace(",", ""), e.time];
+        const [day, time] = [formatDate(e.date), e.time];
         const dayEl = document.createElement("span");
         dayEl.textContent = day;
         const timeEl = document.createElement("span");
@@ -218,7 +218,11 @@ function render() {
         when.append(dayEl, timeEl);
         const where = document.createElement("p");
         where.className = "where";
-        where.textContent = e.venue;
+        if (e.venue === "Neighborhood porches") {
+            where.append("Neighborhood", document.createElement("br"), "Porches");
+        } else {
+            where.textContent = e.venue;
+        }
 
         const venuePhoto = e.image || venueImages[e.venue];
         if (venuePhoto) {
@@ -253,9 +257,12 @@ function render() {
             s.textContent = text;
             tagBox.appendChild(s);
         }
+        const nameColumn = document.createElement("div");
+        nameColumn.className = "event-name-column";
+        nameColumn.append(h3, tagBox);
         const inner = document.createElement("div");
         inner.className = "card-inner";
-        inner.append(h3, when, where, tagBox);
+        inner.append(nameColumn, when, where);
         card.append(inner);
         card.tabIndex = 0;
         card.addEventListener("click", () => openModal(e, tags));
