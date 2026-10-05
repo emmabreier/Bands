@@ -237,6 +237,16 @@ function render() {
         where.className = "where";
         if (e.venue === "Neighborhood porches") {
             where.append("Neighborhood", document.createElement("br"), "Porches");
+        } else if (e.venue === "Flicker Theatre & Bar") {
+            where.append("Flicker", document.createElement("br"), "Theatre & Bar");
+        } else if (e.venue === "Normaltown Comedy Room") {
+            where.append("Normaltown", document.createElement("br"), "Comedy Room");
+        } else if (e.venue === "Athens Creative Hub") {
+            where.append("Athens", document.createElement("br"), "Creative Hub");
+        } else if (e.venue === "UGA Georgia Center") {
+            where.append("UGA Georgia", document.createElement("br"), "Center");
+        } else if (e.venue === "UGA Career Center") {
+            where.append("UGA Career", document.createElement("br"), "Center");
         } else {
             where.textContent = e.venue;
         }
