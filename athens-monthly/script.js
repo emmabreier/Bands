@@ -212,7 +212,24 @@ function render() {
         when.className = "when";
         const [day, time] = [formatDate(e.date), e.time];
         const dayEl = document.createElement("span");
-        dayEl.textContent = day;
+        dayEl.className = "date-line";
+        if (e.date === "2026-10-31") {
+            const leftGhost = document.createElement("img");
+            leftGhost.className = "date-ghost";
+            leftGhost.src = "images/ghost.svg";
+            leftGhost.alt = "";
+            dayEl.appendChild(leftGhost);
+        }
+        const dateLabel = document.createElement("span");
+        dateLabel.textContent = day;
+        dayEl.appendChild(dateLabel);
+        if (e.date === "2026-10-31") {
+            const rightGhost = document.createElement("img");
+            rightGhost.className = "date-ghost";
+            rightGhost.src = "images/ghost.svg";
+            rightGhost.alt = "";
+            dayEl.appendChild(rightGhost);
+        }
         const timeEl = document.createElement("span");
         timeEl.textContent = time;
         when.append(dayEl, timeEl);
@@ -235,15 +252,6 @@ function render() {
             where.appendChild(thumbnail);
         }
 
-        if (e.date === "2026-10-31") {
-            for (const el of [h3, where]) {
-                const g = document.createElement("img");
-                g.className = "date-ghost";
-                g.src = "images/ghost.svg";
-                g.alt = "";
-                el.append(g);
-            }
-        }
         const chips = [
             tags[0],
             [audiences.join(", "), "type"],
