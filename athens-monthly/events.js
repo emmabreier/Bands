@@ -1,6 +1,4 @@
-// Sample data: replace with real listings. date is YYYY-MM-DD.
-// audience: solo | friends | date | family   category: music | comedy | seminar | restaurant
-// audience, category and genre take one value or an array; "all" matches every option.
+
 const events = [
     { title: "Porch Fest", venue: "Neighborhood porches", date: "2026-10-25", time: "1:00 PM", local: true, audience: "all", category: "music", genre: "all", price: "Free", description: "Local bands play from front porches around the neighborhood. Walk from porch to porch and catch country, rap, indie and rock sets all afternoon." },
     { title: "Porch Light Country Night", venue: "Georgia Theatre", date: "2026-10-02", time: "8:00 PM", local: true, audience: "friends", category: "music", genre: "country" },

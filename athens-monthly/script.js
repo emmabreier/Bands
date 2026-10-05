@@ -24,7 +24,7 @@ const modal = document.getElementById("modal");
 const photoEl = document.getElementById("modal-photo");
 const bodyEl = document.getElementById("modal-body");
 
-// Venue photos shown in the pop-up; an event's own image field overrides these.
+
 const venueImages = {
     "40 Watt Club": "images/40watt.jpg",
     "Allgood Lounge": "images/allgoodlounge.jpeg",
@@ -74,7 +74,7 @@ const venueWebsites = {
     "UGA Georgia Center": "https://www.georgiacenter.uga.edu/"
 };
 
-// Optional per-event fields: image (path/URL), description, price.
+
 function openModal(e, tags) {
     photoEl.replaceChildren();
     photoEl.className = "";
@@ -129,7 +129,6 @@ function openModal(e, tags) {
 }
 
 document.getElementById("modal-close").addEventListener("click", () => modal.close());
-// Clicking the backdrop closes the dialog.
 modal.addEventListener("click", ev => {
     if (ev.target === modal) modal.close();
 });
@@ -154,7 +153,6 @@ function matches(e, f) {
     if (f.local.length && !f.local.includes(e.local ? "local" : "visiting")) return false;
     if (f.audience.length && !hits(toList(e.audience).map(audienceKey), f.audience)) return false;
 
-    // Category filter: a checked genre narrows music; other categories match directly.
     const cats = toList(e.category);
     const picked = new Set(f.category);
     if (f.genre.length) picked.add("music");
@@ -221,6 +219,17 @@ function render() {
         const where = document.createElement("p");
         where.className = "where";
         where.textContent = e.venue;
+
+        const venuePhoto = e.image || venueImages[e.venue];
+        if (venuePhoto) {
+            const thumbnail = document.createElement("img");
+            thumbnail.className = "venue-thumb";
+            thumbnail.src = venuePhoto;
+            thumbnail.alt = `Photo of ${e.venue}`;
+            thumbnail.loading = "lazy";
+            thumbnail.decoding = "async";
+            where.appendChild(thumbnail);
+        }
 
         if (e.date === "2026-10-31") {
             for (const el of [h3, where]) {
