@@ -10,6 +10,11 @@ const labels = { solo: "Solo / Friends", friends: "Solo / Friends", date: "Date 
 const audienceKey = a => (a === "friends" ? "solo" : a);
 
 const toList = v => (Array.isArray(v) ? v : v ? [v] : []);
+const longDateFormatter = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" });
+const shortDateFormatter = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric" });
+const displayDateCache = new Map();
+const searchIndex = new Map();
+
 const hits = (value, picks) => {
     const l = toList(value);
     return l.includes("all") || l.some(x => picks.includes(x));
@@ -78,6 +83,8 @@ function openModal(e, tags) {
         const img = document.createElement("img");
         img.src = photo;
         img.alt = e.venue;
+        img.loading = "eager";
+        img.decoding = "async";
         photoEl.appendChild(img);
     } else {
         photoEl.className = `placeholder ${toList(e.category)[0]}`;
@@ -132,11 +139,14 @@ function checked(name) {
 }
 
 function searchText(e) {
+    if (searchIndex.has(e)) return searchIndex.get(e);
     const d = new Date(e.date + "T00:00:00");
-    const long = d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
-    const short = d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+    const long = longDateFormatter.format(d);
+    const short = shortDateFormatter.format(d);
     const numeric = `${d.getMonth() + 1}/${d.getDate()}`;
-    return `${e.title} ${e.venue} ${long} ${short} ${numeric} ${e.date} ${e.time} ${toList(e.category).join(" ")} ${toList(e.genre).join(" ")}`.toLowerCase();
+    const text = `${e.title} ${e.venue} ${long} ${short} ${numeric} ${e.date} ${e.time} ${toList(e.category).join(" ")} ${toList(e.genre).join(" ")}`.toLowerCase();
+    searchIndex.set(e, text);
+    return text;
 }
 
 function matches(e, f) {
@@ -154,8 +164,11 @@ function matches(e, f) {
 }
 
 function formatDate(iso) {
+    if (displayDateCache.has(iso)) return displayDateCache.get(iso);
     const d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+    const formatted = shortDateFormatter.format(d);
+    displayDateCache.set(iso, formatted);
+    return formatted;
 }
 
 function render() {
@@ -174,7 +187,13 @@ function render() {
         : a[key].localeCompare(b[key]));
 
     countEl.textContent = `${list.length} of ${events.length} events`;
-    eventsEl.innerHTML = list.length ? "" : "<p>No events match these filters.</p>";
+    const fragment = document.createDocumentFragment();
+
+    if (!list.length) {
+        const empty = document.createElement("p");
+        empty.textContent = "No events match these filters.";
+        fragment.appendChild(empty);
+    }
 
     for (const e of list) {
         const card = document.createElement("article");
@@ -234,8 +253,10 @@ function render() {
         card.addEventListener("keydown", ev => {
             if (ev.key === "Enter") openModal(e, tags);
         });
-        eventsEl.appendChild(card);
+        fragment.appendChild(card);
     }
+
+    eventsEl.replaceChildren(fragment);
 }
 
 
@@ -247,7 +268,14 @@ function syncGenres() {
 musicParent.addEventListener("change", syncGenres);
 
 document.getElementById("filters").addEventListener("change", render);
-document.getElementById("search").addEventListener("input", render);
+let searchFrame = 0;
+document.getElementById("search").addEventListener("input", () => {
+    if (searchFrame) cancelAnimationFrame(searchFrame);
+    searchFrame = requestAnimationFrame(() => {
+        searchFrame = 0;
+        render();
+    });
+});
 
 document.getElementById("clear").addEventListener("click", () => {
     document.querySelectorAll('#filters input[type="checkbox"]').forEach(i => (i.checked = false));
