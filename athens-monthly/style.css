@@ -459,3 +459,43 @@ main { flex: 1; }
     #modal { width: 94vw; }
     #modal-photo img, #modal-photo.placeholder { height: 190px; }
 }
+
+@media (min-width: 1601px) {
+    .masthead,
+    .layout {
+        width: min(100%, 2000px);
+    }
+
+    header { padding-inline: clamp(40px, 4vw, 80px); }
+    .masthead { gap: clamp(28px, 2vw, 40px); padding-inline: clamp(32px, 3vw, 56px); }
+    header h1 { font-size: clamp(56px, 3.5vw, 72px); }
+    header p { font-size: clamp(20px, 1.35vw, 27px); }
+    .month { font-size: clamp(24px, 1.7vw, 34px); }
+    .ghost { width: clamp(75px, 5vw, 100px); height: clamp(83px, 5.5vw, 110px); }
+
+    .intro { width: min(1750px, calc(100% - clamp(260px, 18vw, 360px))); }
+    .intro-inner { gap: clamp(28px, 2vw, 40px); }
+    .intro img { width: clamp(380px, 24vw, 460px); height: clamp(380px, 24vw, 460px); }
+    .intro-text { flex-basis: clamp(620px, 40vw, 780px); width: clamp(620px, 40vw, 780px); }
+    .intro h2 { font-size: clamp(22px, 1.5vw, 30px); }
+    .intro p { font-size: clamp(17px, 1.15vw, 23px); }
+
+    .layout { gap: clamp(16px, 1.5vw, 30px); padding-inline: clamp(40px, 3vw, 60px); }
+    #filters { width: clamp(260px, 18vw, 340px); padding: clamp(14px, 1.2vw, 22px); }
+    .filter-top h2 { font-size: clamp(18px, 1.2vw, 24px); }
+    #filters fieldset label { font-size: clamp(15px, 1vw, 20px); }
+
+    #events { gap: clamp(20px, 1.4vw, 28px); }
+    .card-inner {
+        grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr) minmax(260px, 1fr);
+        gap: clamp(20px, 1.5vw, 30px);
+        height: clamp(176px, 11vw, 220px);
+        padding: clamp(18px, 1.5vw, 30px) clamp(28px, 2vw, 40px);
+    }
+    .card h3 { font-size: clamp(24px, 1.6vw, 32px); }
+    .when, .where { font-size: clamp(20px, 1.35vw, 27px); }
+    .when { font-size: clamp(24px, 1.6vw, 32px); }
+    .venue-thumb { width: clamp(170px, 10.5vw, 210px); height: auto; aspect-ratio: 170 / 95; }
+    .chips { gap: clamp(6px, 0.6vw, 12px) clamp(12px, 0.8vw, 16px); }
+    .chip { font-size: clamp(10px, 0.75vw, 15px); }
+}
